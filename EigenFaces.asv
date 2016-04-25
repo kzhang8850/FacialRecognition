@@ -34,20 +34,20 @@ classdata = tempdata;
 
 %finds the mean face, which is used for centering the dataset around the
 %mean
-mean_face = mean(testdata, 3);
+mean_face = mean(classdata, 3);
 
 
 %finds the difference faces for all faces in the database. This is the
 %centered dataset.
-classdata2 = testdata;
+classdata2 = classdata;
 
-for i=1:size(testdata, 3)
-    classdata2(:,:,i) = testdata(:,:,i) - mean_face;
+for i=1:size(classdata, 3)
+    classdata2(:,:,i) = classdata(:,:,i) - mean_face;
 end
 
 %converts to vector form, which is used to create a image by image
 %covariance matrix
-classvector = reshape(classdata2, [360*256, size(testdata, 3)]);
+classvector = reshape(classdata2, [360*256, size(classdata, 3)]);
 
 
 %creates the covariance matrix by using the formula C = 1/(N-1)*A^T*A
@@ -71,7 +71,7 @@ end
 %testing eigenfaces with decompostion and reconstruction
 
 %using the most important eigenfaces, based on 95% of the eigenvalues
-temp = eigenfaces(:,1:43);
+temp = eigenfaces(:,1:120);
 
 
 
@@ -111,7 +111,7 @@ for j=1:size(classdata, 3)
     axis equal;
     xlabel('Original Image');
     subplot(1,2,2);
-    imagesc(testdata(:,:,index));
+    imagesc(classdata(:,:,index));
     xlabel('Found Image');
     % reconstruct = temp * alpha ;
     % recon = reshape(reconstruct, [360, 256]) + mean_face;
