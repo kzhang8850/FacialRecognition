@@ -36,10 +36,17 @@ recognized_image = [];
 
 %searching for the differences and finding the smallest distance between
 %two pixels
-for j=1:size(classdata, 3)
-    testing = classdata(:,:,j);
-    for i=1:size(testdata, 3)
-        temp = testdata(:,:,i);
+
+% for j=1:size(classdata, 3)
+for j=1:size(testdata, 3)
+    
+%     testing = classdata(:,:,j);
+    testing = testdata(:,:,j);
+%     for i=1:size(testdata, 3)
+    for i=1:size(classdata, 3)
+        
+%         temp = testdata(:,:,i);
+        temp = classdata(:,:,i);
         diff = testing - temp;
         distance = sqrt(sum(sum(diff.^2)));
         if distance < smallest_distance

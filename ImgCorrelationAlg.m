@@ -35,7 +35,10 @@ correl = 0;
 recognized_image = [];
 
 for i=1:size(testdata, 3)
+% for i=1:size(classdata, 3)    
     image1 = testdata(:,:,i);
+%     image1 = classdata(:,:,i);
+
     
     %get images and resizing to smaller size
     
@@ -43,7 +46,10 @@ for i=1:size(testdata, 3)
     img1small = resample(img1smallx', 1,4);
     image1 = img1small';
     for j=1:size(classdata, 3)
+%     for j=1:size(testdata, 3)
+    
         image2 = classdata(:,:,j);
+%         image2 = testdata(:,:,j);
 
         img2smallx = resample(image2, 1,4);
         img2small = resample(img2smallx', 1,4);

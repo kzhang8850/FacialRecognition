@@ -34,14 +34,20 @@ classdata = tempdata;
 
 %finds the mean face, which is used for centering the dataset around the
 %mean
-mean_face = mean(testdata, 3);
+
+% mean_face = mean(testdata, 3);
+mean_face = mean(classdata, 3);
 
 
 %finds the difference faces for all faces in the database. This is the
 %centered dataset.
-classdata2 = testdata;
 
-for i=1:size(testdata, 3)
+% classdata2 = testdata;
+classdata2 = classdata;
+
+
+% for i=1:size(testdata, 3)
+for i=1:size(classdata, 3)    
     classdata2(:,:,i) = testdata(:,:,i) - mean_face;
 end
 
@@ -71,15 +77,21 @@ end
 %testing eigenfaces with decompostion and reconstruction
 
 %using the most important eigenfaces, based on 95% of the eigenvalues
-temp = eigenfaces(:,1:43);
+
+% temp = eigenfaces(:,1:43);
+temp = eigenfaces(:,1:120);
 
 
 
 
 
-for j=1:size(classdata, 3)
+% for j=1:size(classdata, 3)
+for j=1:size(testdata, 3)
+    
     %pulling the test subject for facial recognition
-    test = classdata(:,:,j);
+%     test = classdata(:,:,j);
+    test = testdata(:,:,j);
+
     test2 = test - mean_face;
     test = reshape(test2, [360*256, 1]);
 
@@ -91,8 +103,11 @@ for j=1:size(classdata, 3)
     % dist = zeros(344);
     % number = 1:344;
 
-    for i=1:size(testdata, 3)
-        data = testdata(:,:,i);
+%     for i=1:size(testdata, 3)
+    for i=1:size(classdata, 3)    
+%         data = testdata(:,:,i);
+        data = classdata(:,:,i);
+
         data2 = data - mean_face;
         data = reshape(data2, [360*256, 1]);
         alpha2 = temp' * data;
@@ -111,7 +126,9 @@ for j=1:size(classdata, 3)
     axis equal;
     xlabel('Original Image');
     subplot(1,2,2);
-    imagesc(testdata(:,:,index));
+%     imagesc(testdata(:,:,index));
+    imagesc(classdata(:,:,index));
+    
     xlabel('Found Image');
     % reconstruct = temp * alpha ;
     % recon = reshape(reconstruct, [360, 256]) + mean_face;
