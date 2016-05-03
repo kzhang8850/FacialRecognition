@@ -1,9 +1,12 @@
 %preliminary algorithm for facial recognition, utilizing eigenfaces and
 %eigenstuff to find the closest match
 
-
 %loads the database of student faces
 load classdata.mat;
+
+
+load testdata.mat;
+finaldata = testdata./255;
 
 %creating the testset and the dataset
 testdata = zeros(360, 256, 43);
@@ -31,7 +34,7 @@ for i =1:344
 end
 
 classdata = tempdata;
-
+tic
 %finds the mean face, which is used for centering the dataset around the
 %mean
 
@@ -48,12 +51,12 @@ classdata2 = classdata;
 
 % for i=1:size(testdata, 3)
 for i=1:size(classdata, 3)    
-    classdata2(:,:,i) = testdata(:,:,i) - mean_face;
+    classdata2(:,:,i) = classdata(:,:,i) - mean_face;
 end
 
 %converts to vector form, which is used to create a image by image
 %covariance matrix
-classvector = reshape(classdata2, [360*256, size(testdata, 3)]);
+classvector = reshape(classdata2, [360*256, size(classdata, 3)]);
 
 
 %creates the covariance matrix by using the formula C = 1/(N-1)*A^T*A
@@ -83,14 +86,14 @@ temp = eigenfaces(:,1:120);
 
 
 
-
-
+for j=1:size(finaldata, 3)
 % for j=1:size(classdata, 3)
-for j=1:size(testdata, 3)
+% for j=1:size(testdata, 3)
     
     %pulling the test subject for facial recognition
 %     test = classdata(:,:,j);
-    test = testdata(:,:,j);
+%     test = testdata(:,:,j);
+    test = finaldata(:,:,j);
 
     test2 = test - mean_face;
     test = reshape(test2, [360*256, 1]);
@@ -126,8 +129,8 @@ for j=1:size(testdata, 3)
     axis equal;
     xlabel('Original Image');
     subplot(1,2,2);
-%     imagesc(testdata(:,:,index));
     imagesc(classdata(:,:,index));
+%     imagesc(classdata(:,:,index));
     
     xlabel('Found Image');
     % reconstruct = temp * alpha ;
@@ -139,7 +142,7 @@ end
 
 
 
-
+toc
 
 
 

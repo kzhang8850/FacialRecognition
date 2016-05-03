@@ -1,7 +1,10 @@
 %This is a preliminary algorithm for facial recognition, utilizing pixel
 %spaces and finding the smallest distance
-
+tic
 load classdata.mat;
+load testdata.mat;
+finaldata = testdata;
+finaldata = finaldata./255;
 
 %creating the testset and the dataset
 testdata = zeros(360, 256, 43);
@@ -37,16 +40,21 @@ recognized_image = [];
 %searching for the differences and finding the smallest distance between
 %two pixels
 
+
+
+
+for j =1:size(finaldata, 3)
 % for j=1:size(classdata, 3)
-for j=1:size(testdata, 3)
+% for j=1:size(testdata, 3)
     
 %     testing = classdata(:,:,j);
-    testing = testdata(:,:,j);
-%     for i=1:size(testdata, 3)
-    for i=1:size(classdata, 3)
+%     testing = testdata(:,:,j);
+    testing = finaldata(:,:,j);
+    for i=1:size(testdata, 3)
+%     for i=1:size(classdata, 3)
         
-%         temp = testdata(:,:,i);
-        temp = classdata(:,:,i);
+        temp = testdata(:,:,i);
+%         temp = classdata(:,:,i);
         diff = testing - temp;
         distance = sqrt(sum(sum(diff.^2)));
         if distance < smallest_distance
@@ -66,3 +74,5 @@ for j=1:size(testdata, 3)
     recognized_image = [];
     smallest_distance = 100000000000000000000000000;
 end
+
+toc

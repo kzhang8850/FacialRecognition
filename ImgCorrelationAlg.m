@@ -1,8 +1,11 @@
 %preliminary algorithm for facial recognition, utilizing Pearson
 %Correlation Coefficient to determine the closest match
 
-
+tic
 load classdata.mat;
+
+load testdata.mat;
+finaldata = testdata./255;
 
 %creating the testset and the dataset
 testdata = zeros(360, 256, 43);
@@ -34,31 +37,35 @@ classdata = tempdata;
 correl = 0;
 recognized_image = [];
 
-for i=1:size(testdata, 3)
+
+
+for i=1:size(finaldata, 3)
+% for i=1:size(testdata, 3)
 % for i=1:size(classdata, 3)    
-    image1 = testdata(:,:,i);
+%     image1 = testdata(:,:,i);
 %     image1 = classdata(:,:,i);
+    image1 = finaldata(:,:,i);
 
     
     %get images and resizing to smaller size
-    
-    img1smallx = resample(image1, 1,4);
-    img1small = resample(img1smallx', 1,4);
-    image1 = img1small';
-    for j=1:size(classdata, 3)
-%     for j=1:size(testdata, 3)
-    
-        image2 = classdata(:,:,j);
-%         image2 = testdata(:,:,j);
+%     
+%     img1smallx = resample(image1, 1,4);
+%     img1small = resample(img1smallx', 1,4);
+%     image1 = img1small';
+%     for j=1:size(classdata, 3)
+    for j=1:size(testdata, 3)
 
-        img2smallx = resample(image2, 1,4);
-        img2small = resample(img2smallx', 1,4);
-        image2 = img2small';
+%         image2 = classdata(:,:,j);
+        image2 = testdata(:,:,j);
+
+%         img2smallx = resample(image2, 1,4);
+%         img2small = resample(img2smallx', 1,4);
+%         image2 = img2small';
 
 
         %reshaping to vectors
-        col1 = reshape(image1, [90*64,1]);
-        col2 = reshape(image2, [90*64,1]);
+        col1 = reshape(image1, [360*256,1]);
+        col2 = reshape(image2, [360*256,1]);
 
         %making correlation matrix
         testmat = [col1 col2];
@@ -87,3 +94,5 @@ for i=1:size(testdata, 3)
     correl = 0;       
 
 end
+
+toc
